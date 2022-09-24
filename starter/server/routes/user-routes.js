@@ -34,11 +34,12 @@ router.get('/users/:username', (req, res) => {
           '#un': 'username',
           '#ca': 'createdAt',
           '#th': 'thought',
+          '#img': 'image'
         },
         ExpressionAttributeValues: {
           ':user': req.params.username,
         },
-        ProjectionExpression: '#un,#th, #ca',
+        ProjectionExpression: '#un,#th, #ca, #img',
         ScanIndexForward: false,
       };
 
@@ -55,26 +56,30 @@ router.get('/users/:username', (req, res) => {
   });
 
 // Create new user at /api/users
+// Create new user
 router.post('/users', (req, res) => {
-    const params = {
-      TableName: table,
-      Item: {
-        username: req.body.username,
-        createdAt: Date.now(),
-        thought: req.body.thought,
-      },
-    };
-    // database call
-    dynamodb.put(params, (err, data) => {
-        if (err) {
-          console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
-          res.status(500).json(err); // an error occurred
-        } else {
-          console.log("Added item:", JSON.stringify(data, null, 2));
-          res.json({"Added": JSON.stringify(data, null, 2)});
-        }
-      });
+  const params = {
+    TableName: table,
+    Item: {
+      username: req.body.username,
+      createdAt: Date.now(),
+      thought: req.body.thought,
+      image: req.body.image
+    },
+  };
+  dynamodb.put(params, (err, data) => {
+    if (err) {
+      console.error(
+        'Unable to add item. Error JSON:',
+        JSON.stringify(err, null, 2),
+      );
+      res.status(500).json(err); // an error occurred
+    } else {
+      console.log('Added item:', JSON.stringify(data, null, 2));
+      res.json({ Added: JSON.stringify(data, null, 2) });
+    }
   });
+});
 
 
   module.exports = router;
