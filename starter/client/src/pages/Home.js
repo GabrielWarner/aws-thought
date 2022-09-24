@@ -18,6 +18,7 @@ const Home = () => {
         setIsLoaded(true);
       } catch (error) {
         console.log(error);
+        console.log("hi")
       }
     };
     fetchData();
