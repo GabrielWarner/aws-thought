@@ -41,8 +41,6 @@ const ThoughtForm = () => {
     event.preventDefault();
     const data = new FormData();
     data.append('image', fileInput.current.files[0]);
-    // send image file to endpoint with the postImage function
-    // ...
     const postImage = async () => {
       try {
         const res = await fetch('/api/image-upload', {
@@ -53,7 +51,7 @@ const ThoughtForm = () => {
         if (!res.ok) throw new Error(res.statusText);
         const postResponse = await res.json();
         setFormState({ ...formState, image: postResponse.Location });
-    
+        console.log('postImage: ', postResponse.Location);
         return postResponse.Location;
       } catch (error) {
         console.log(error);
